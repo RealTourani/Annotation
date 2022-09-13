@@ -2,7 +2,9 @@ import os
 import cv2
 import pybboxes as pbx
 
-
+names = [x for x in input("Enter the names : ").split()]
+with open('frames/classes.txt', mode='w') as myfile:
+    myfile.write('\n'.join(names))
 
 def labeling(img_path):
     details = []
@@ -34,16 +36,21 @@ def labeling(img_path):
     bottomx = details[2]
     bottmy = details[3]
 
+    f = open('frames/classes.txt', 'r')
+    data = f.read()
+    lines = data.splitlines()
+    class_idx = None
+    for idx,line in enumerate(lines):
+        if current_class == line:
+            class_idx = idx
     
     # Append coordinates to a txt file
     f = open(name+".txt", "w")
-    f.write(str(upperx) + " "+ str(uppery) + " "+ str(bottomx)+ " "+ str(bottmy))
+    f.write(str(class_idx) + " " + str(upperx) + " "+ str(uppery) + " "+ str(bottomx)+ " "+ str(bottmy))
     f.close
 
     #show cropped image
-    cv2.imshow("ROI", roi_cropped)
-
-    cv2.imwrite("crop.jpeg",roi_cropped)
+    cv2.imshow(name, roi_cropped)
 
     cv2.waitKey(0)
     cv2.destroyAllWindows()
@@ -52,7 +59,8 @@ def labeling(img_path):
 directory = 'frames/'
 number_of_files = len([item for item in os.listdir(directory) if os.path.isfile(os.path.join(directory, item))])
 
-for i in range(number_of_files):
-
+for i in range(10):
+    current_class = input("Enter your current class name : ")
     labeling('frames/frame{}.jpg'.format(i))
+    
         
