@@ -1,7 +1,7 @@
 import cv2
 import os
 
-count = 0
+total_frame = 0
 path = 'frames'
 
 isExist = os.path.exists(path)
@@ -12,12 +12,11 @@ cap = cv2.VideoCapture('1.mp4')
 success, image = cap.read()
 
 while success:
-  cv2.imwrite("frames/frame%d.jpg" % count, image)    
+  cv2.imwrite("frames/frame%d.jpg" % total_frame, image)    
   success, image = cap.read()
   print('Read a new frame: ', success)
-  count += 1
+  total_frame += 1
 
-  Total_frame = count
 
-print("Total frame : ", Total_frame)
+print("Total frame : ", total_frame)
 
